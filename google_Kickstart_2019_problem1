@@ -44,7 +44,10 @@ Case #3: 6
 
 
 #prog starts
-import sys  #only this is used,other imports written as preparation
+
+/*Python 3 code*/
+
+import sys                                 
 stdout = sys.stdout
 rr = lambda: input().strip()
 rri = lambda: int(rr())
