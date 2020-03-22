@@ -1,0 +1,28 @@
+import sys
+stdout = sys.stdout
+rr = lambda: input().strip()
+rri = lambda: int(rr())
+rrm = lambda: list(map(int, rr().split()))
+
+def solve(N, picks, A):
+    Anew=[y for x in A for y in x]
+    Anew.sort()
+    
+    ans = 0
+    for i in range(1,picks+1):
+        ans+=Anew[-i]
+        
+    return ans
+
+T = rri()
+for tc in range(1, T+1):
+    N,k,P = input().split()
+    N=int(N)
+    k=int(k)
+    P=int(P)
+    A=[]
+    for i in range(N):
+        arow= list(map(int, input().split()))
+        A.append(arow)
+    ans = solve(N, P, A)
+    print("Case #{}: {}".format(tc, ans))
