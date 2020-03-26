@@ -1,0 +1,58 @@
+#include<bits/stdc++.h>
+
+  using namespace std;
+
+
+  typedef long long ll;
+  typedef long l;
+
+  #define floop(i,n) for(ll i=0;i<n;i++)
+  #define floopk(i,n,k) for(ll i=0;i<n;i+=k)
+  #define si(n) scanf("%ld",&n)
+  #define po(n) printf("%ld",n)
+
+  bool prime [1000005];
+  l prefix[1000005], suffix[1000005];
+  int main(){
+
+    // freopen("input00.txt","r",stdin);
+    //freopen("output00.txt","w",stdout);
+
+    memset(prime, true, sizeof(prime));
+    for(int i = 2; i*i < 1000005; i++){
+        if(prime[i]){
+            for(int j = i+i; j < 1000005; j+=i)
+                prime[j] = false;
+        }
+    }
+
+    prefix[1] = 1;
+    suffix[1000004] = 1e9+7;
+
+    for(int i = 2; i < 1000005; i++){
+        if(prime[i])
+            prefix[i] = i;
+        else
+            prefix[i] = prefix[i-1];
+    }
+
+    for(int i = 1000004; i > 1; i--){
+        if(prime[i])
+            suffix[i] = i;
+        else
+            suffix[i] = suffix[i+1];
+    }
+
+    int q;
+    cin>>q;
+    while(q--){
+        int x, y;
+        cin>>x>>y;
+        if(prefix[y] < x || suffix[x] > y)
+            cout<<"0\n";
+        else
+            cout<<prefix[y]-suffix[x]<<"\n";
+    }
+
+    return 0;
+  }
