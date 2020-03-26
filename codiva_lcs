@@ -1,0 +1,34 @@
+import sys
+import itertools
+
+def minCost(x, y, k):
+
+    cost=26
+    c=itertools.permutations(y, k)
+    
+    for ci in c:
+        loc_cost=0
+        xn=x[:]
+        for j in range(k):
+            char_cost=25
+            for i in xn:
+                temp=ci[j]^i
+                if temp<char_cost:
+                    #del[i]
+                    char_cost=temp
+                    char_sel=i
+            xn.remove(char_sel)
+            loc_cost+=char_cost
+        if loc_cost<cost:
+            cost=loc_cost
+    
+    return cost 
+    
+
+if __name__ == "__main__":
+    n, m, k = input().strip().split(' ')
+    n, m, k = [int(n), int(m), int(k)]
+    x = input().split()
+    y = input().split()
+    result = minCost(x, y, k)
+    print(result)
