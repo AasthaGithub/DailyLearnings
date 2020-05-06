@@ -54,3 +54,4 @@ class Solution:
 #                 q.popleft()
 #         return -1 if not q else q[0][1]
 
+#ideally ordered hash map or queue would be good data structures to use
