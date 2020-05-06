@@ -21,3 +21,10 @@ class Solution:
         nums.sort()
         return nums[len(nums)//2]            
 '''
+
+'''
+other techniques;
+Randomization
+divide and conquer
+moore's voting algo
+'''
