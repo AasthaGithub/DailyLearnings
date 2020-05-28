@@ -40,3 +40,24 @@ class Solution:
         for i in range(1, num+1):
             dp[i] = dp[i//2] + (1 if (i%2) else 0)
         return dp
+
+  #logic  
+    
+    class Solution:
+    def countBits(self, num: int) -> List[int]:
+        if num == 0:
+            return [0]
+		
+        next_pow_2 = 1
+        add_index = 0
+        result = [0 for i in range(num + 1)]
+		
+        for i in range(1, num + 1):
+            if i == next_pow_2:
+                next_pow_2 = next_pow_2 * 2
+                add_index = 0
+            else:
+                add_index += 1
+            result[i] = 1 + result[add_index]
+        
+        return result
