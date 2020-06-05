@@ -1,3 +1,54 @@
+//116 ms
+
+static const auto _____ = []()
+{
+    // fast IO code : this I understand
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    return 0;
+}();
+
+/*
+1.Brut Force
+if our array is [1,3,4,4] and we have to return index propation to weighted
+[0,1,1,1,2,2,2,2,3,3,3,3]
+random function generate random number if we call 100 times random function
+we assume that rand()%12 generate index from 0-11 with equal probability so whose 
+arr[index] higher higher times it's index return .
+
+2.Binary Search
+if our array is [1,3,4,4] and we have to return index propation to weighted
+[1,4,8,12]
+  3 4  4 
+random function generate random number if we call 100 times random function
+we assume that rand()%12 generate index from 0-11 with equal probability so whose
+*/
+class Solution {
+public:
+    vector<int> sums;
+public:
+    Solution(vector<int>& w) {
+        int sum = 0;
+        for(int i=0;i<w.size();i++) {
+            sum += w[i];
+            sums.push_back(sum);
+        }
+    }
+    
+    int pickIndex() {
+        int size = sums.size();
+        int randomNumber = rand() % sums[size-1];
+        int l=0, r=size;
+        while(l<r) {
+            int m = l+(r-l)/2;
+            if(sums[m] <= randomNumber) l=m+1;
+            else r=m;
+        }
+        return l;
+    }
+};
+
+
 //112 ms fastest
 class Solution {
     vector<int> mW;
