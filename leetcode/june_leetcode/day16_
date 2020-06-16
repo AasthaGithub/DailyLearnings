@@ -1,0 +1,135 @@
+#12 ms
+import re
+
+
+class Solution:
+    def validIPAddress(self, IP: str) -> str:
+        def valid_ipv4():
+            octets = IP.split('.')
+            if len(octets) != 4:
+                return False
+            
+            for octet in octets:
+                if not octet.isdigit():
+                    return False
+                if len(octet) > 1 and octet[0] == '0':
+                    return False
+                try:
+                    if int(octet) > 255:
+                        return False
+                except ValueError:
+                    return False
+            return True
+                
+        def valid_ipv6():
+            parts = IP.split(':')
+            if len(parts) != 8:
+                return False
+            
+            for part in parts:
+                if not part or len(part) > 4:
+                    return False
+                
+                if not re.match('[0-9a-fA-F]', part):
+                    return False
+                
+                try:
+                    int(part, 16)
+                except ValueError:
+                    return False
+            return True
+        
+        if ':' in IP:
+            return "IPv6" if valid_ipv6() else "Neither"
+        return "IPv4" if valid_ipv4() else "Neither"
+        
+#
+class Solution:
+    def validIPAddress(self, IP: str) -> str:
+        def validate_IPv4(IP: str) -> str:
+            split = IP.split('.')
+            for sub in split:
+                # check if each address field has to be between 1-3 digits
+                if len(sub) == 0 or len(sub) >3:
+                    return 'Neither'
+                # check if first digit is '0' and it has more than one digit -> False
+                # check if subnet is are only digits
+                if ((sub[0] == '0' and len(sub) != 1) or not sub.isdigit() or int(sub) > 255):
+                    return 'Neither'
+            return 'IPv4'
+                    
+        def validate_IPv6(IP: str) -> str:
+            split = IP.split(':') 
+            hexadigits = '0123456789abcdefABCDEF'
+            for sub in split:
+                if len(sub) == 0 or len(sub) > 4: #or not all(c in hexdigits for c in sub):
+                    return "Neither"
+                for c in sub:
+                     if c not in hexadigits:
+                        return "Neither"
+            return 'IPv6'
+        
+        if len(IP.split('.'))-1 == 3:
+            return validate_IPv4(IP)
+        elif len(IP.split(':'))-1 == 7:
+            return validate_IPv6(IP)
+        else:
+            return "Neither"
+
+
+#28 ms mine
+def check_v4(IP):
+    IP= IP.split('.')    
+    for i in IP: 
+        #print(i)
+        l=len(i)
+        #print(l)
+        if l>1:
+            if ord(i[0])>48 and ord(i[0])<58:
+                print('this')
+            else:
+                return False
+                
+        try:
+            int_i=int(i)
+            if int_i<256 and int_i>=0:
+                continue
+            else:
+                return False
+        except:
+            return False
+    return True
+    
+def check_v6(IP):
+    IP= IP.split(':')
+    for i in IP:
+        #print(i)
+        l=len(i)
+        if l==0:
+            return False
+        if l>4:
+            return False
+        
+        for a in i.lower():
+            aa=ord(a)
+            if (aa>47 and aa<58) or (aa>96 and aa<103):
+                continue
+            else:
+                return False       
+    return True            
+
+class Solution:  
+    def validIPAddress(self, IP: str) -> str:       
+        if '.' in IP:
+            if IP.count('.')==3:
+                if check_v4(IP):
+                    return "IPv4"
+            return "Neither"        
+        elif ':' in IP:
+            if IP.count(':')==7:
+                if check_v6(IP):
+                    return "IPv6"
+            return "Neither"      
+        else:
+            return "Neither"
+        
