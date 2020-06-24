@@ -46,5 +46,5 @@ class Solution:
         return math.factorial(2*n)//(math.factorial(n)*math.factorial(n+1))
         
         
-        
+#top down approach: https://leetcode.com/problems/unique-binary-search-trees/discuss/703707/Python3-or-98-faster-or-Top-down-Dp-solution        
 # another good explanation: https://leetcode.com/problems/unique-binary-search-trees/discuss/703049/Python-Math-oneliner-O(n)-using-Catalan-number-explained        
