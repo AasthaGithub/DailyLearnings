@@ -1,3 +1,136 @@
+#fastest
+import re
+
+
+class Solution:
+    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
+        def dfs(i, j, parent):
+            letter = board[i][j]
+
+            node = parent[letter]
+
+            if '$' in node:
+                ret.append(node.pop('$'))
+
+            board[i][j] = ''
+
+            i > 0 and board[i - 1][j] in node and dfs(i - 1, j, node)
+            j + 1 < n and board[i][j + 1] in node and dfs(i, j + 1, node)
+            i + 1 < m and board[i + 1][j] in node and dfs(i + 1, j, node)
+            j > 0 and board[i][j - 1] in node and dfs(i, j - 1, node)
+
+            board[i][j] = letter
+
+            if not node:
+                parent.pop(letter)
+
+        alphabet = ''.join({''.join(row) for row in board})
+        match = re.compile('[' + alphabet + ']{1,}').fullmatch
+
+        words = {word.strip() for word in words if match(word)}
+
+        root = {}
+
+        for word in words:
+            curr = root
+
+            for letter in word:
+                if letter not in curr:
+                    curr[letter] = {}
+
+                curr = curr[letter]
+            curr['$'] = word
+
+        ret = []
+        m, n = len(board), len(board[0])
+
+        for i in range(m):
+            for j in range(n):
+                if board[i][j] in root:
+                    dfs(i, j, root)
+
+        return ret
+
+#clean
+class Solution:
+    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]: 
+        def dfs(i, j, parent):
+            letter = board[i][j]
+
+            node = parent[letter]
+
+            if '$' in node:
+                ret.append(node.pop('$'))
+
+            board[i][j] = ''
+
+            i > 0     and board[i-1][j] in node and dfs(i-1, j, node)
+            j + 1 < n and board[i][j+1] in node and dfs(i, j+1, node)
+            i + 1 < m and board[i+1][j] in node and dfs(i+1, j, node)
+            j > 0     and board[i][j-1] in node and dfs(i, j-1, node)
+
+            board[i][j] = letter
+            if not node:
+                parent.pop(letter)
+
+        alphabet = ''.join({''.join(row) for row in board})
+        match = re.compile('[' + alphabet + ']{1,}').fullmatch
+
+        words = {word.strip() for word in words if match(word)}
+                
+        root = {}
+        for word in words:
+            curr = root
+            for letter in word:
+                if letter not in curr:
+                    curr[letter] = {}
+                curr = curr[letter]
+            curr['$'] = word
+
+        ret = []
+        m, n = len(board), len(board[0])
+        for i in range(m):
+            for j in range(n):
+                if board[i][j] in root:
+                    dfs(i, j, root)
+
+        return ret
+
+#es
+class Solution:
+    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
+        tries = {}
+        for word in words:
+            t = tries
+            for w in word:
+                if w not in t:
+                    t[w]={}
+                t = t[w]
+            t['#']=word
+        result = []
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                if board[i][j] in tries:
+                    self.helper(board, i, j, words, tries, result)
+        return result
+    
+    def helper(self, board, i, j, words, tries, result):
+        if i<0 or j<0 or i>=len(board) or j>=len(board[0]) or board[i][j] not in tries:
+            return 
+        nextWord = tries[board[i][j]]
+        t = board[i][j]
+        board[i][j]='$'
+        find = nextWord.pop('#', False)
+        if find:
+            result.append(find)
+        self.helper(board, i,j-1, words, nextWord, result)
+        self.helper(board, i,j+1, words, nextWord, result)
+        self.helper(board, i-1,j, words, nextWord, result)
+        self.helper(board, i+1,j, words, nextWord, result)
+        board[i][j]=t
+        if not nextWord:
+            tries.pop(board[i][j])
+
 #backtracking
 class Solution:
     def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
