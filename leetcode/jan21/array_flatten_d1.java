@@ -151,3 +151,95 @@ public StringBuilder normalize(int[] arr){
 }
         
     }
+
+
+
+
+// Least Space complexity (SC)
+
+class Solution {
+    class  Piece implements Comparable<Piece>{
+        int firstElement;
+        int[] allElements;
+
+        Piece(int firstElement){
+            this.firstElement = firstElement;
+        }
+
+        Piece(int firstElement,int[] allElements){
+            this.firstElement = firstElement;
+            this.allElements = allElements;
+        }
+        @Override
+        public int compareTo(Piece o) {
+            return Integer.compare(this.firstElement,o.firstElement);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Piece piece = (Piece) o;
+            return firstElement == piece.firstElement;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(firstElement);
+        }
+    }
+    
+    public boolean canFormArray(int[] arr, int[][] pieces) {
+        int[] finalResult = new int[arr.length];
+        int fp=0;
+        List<Piece> pieceList = new ArrayList<>();
+        for(int i=0;i<pieces.length;i++){
+            int[] curr = pieces[i];
+            pieceList.add(new Piece(curr[0],curr));
+        }
+        Collections.sort(pieceList);
+        for(int i=0; i<arr.length;i++){
+            int index = Collections.binarySearch(pieceList,new Piece(arr[i]));
+            if(index>=0){
+                for(int f=0; f<pieceList.get(index).allElements.length;f++){
+                    if(fp<finalResult.length){
+                        finalResult[fp++] = pieceList.get(index).allElements[f];
+                    }else{
+                        return false;
+                    }
+                }
+            }
+        }
+
+        for(int i=0,j=0;i<arr.length && j<finalResult.length;i++,j++){
+            if(arr[i] != finalResult[j]){
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
+
+// Less Space-  no normalize, mark Visited approach
+
+class Solution {
+    public boolean canFormArray(int[] arr, int[][] pieces) {
+        StringBuilder sb = new StringBuilder();
+        for(int x : arr){
+            sb.append(x);
+            sb.append("#");
+        }
+        for(int i = 0; i < pieces.length; i++){
+            StringBuilder res = new StringBuilder();
+            for(int j = 0; j < pieces[i].length; j++){
+                res.append(String.valueOf(pieces[i][j]));
+                res.append("#");
+            }
+            if(!sb.toString().contains(res.toString())){
+                return false;
+            }
+        }
+        return true;
+    }
+}
